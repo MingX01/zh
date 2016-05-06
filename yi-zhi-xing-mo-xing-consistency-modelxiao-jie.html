@@ -96,7 +96,7 @@
 借用<a href="http://coldattic.info/shvedsky/pro/blogs/a-foo-walks-into-a-bar/posts/88">这篇博客</a>中的图示来说明的话， 每一个操作都被表示为一条线段，不同的轨道表示不同的线程，而横轴为时间顺序。
 如果这一数据结构是满足强一致的那么操作 x 对其的修改对于所有在 x 结束时间之后才开始的操作都是可见的。
 相对的，如果另一个操作 y 的执行时间与 x 有重合（如图中红色的那些操作），那么 x 与 y 的生效顺序是任意的。</p>
-<p><img alt="Linearizability" src="../images/Linearizability.png" /></p>
+<p><img alt="Linearizability" src="images/Linearizability.png" /></p>
 <p>按照定义强一致模型是可组合的。也就是说如果一个操作由两个满足强一致的子操作组成，那么父操作也是强一致的。
 强一致提供了一系列很好的特性，也非常的易于理解，但问题在于它基本很难得到高效的实现。
 因此，研究人员就将其进一步的放松，从而得到了在单机多线程环境下实际上普遍存在的顺序一致性。</p>
@@ -105,7 +105,7 @@
 相对的，顺序一致模型（也被称之为可序列化）就只要求能够区分同一线程中各个操作的顺序。
 用同上的图例的话，就会得到下图所示的结果。
 从中我们可以看到，只要两个操作的执行线程是不同的，那么它们最终的生效顺序就是任意的。</p>
-<p><img alt="Sequential" src="../images/Sequential.png" /></p>
+<p><img alt="Sequential" src="images/Sequential.png" /></p>
 <p>虽然看上起顺序一致已经对约束进行了极大地放松，但事实上还是不够的，甚至可以说我们现在常用的各种编程语言其实都是不支持完整的顺序一致的。
 这主要是因为现在的 CPU 和编译器会尝试对代码进行各种各样的优化，有时候它们可能会为了优化性能而把程序员在写程序时规定的代码执行顺序打乱，从而导致程序不满足顺序一致的结果。
 举一个很简单的例子，假设 x 和 y 这两个变量的初始值都为 0，而两个线程分别执行以下的程序：</p>
@@ -135,7 +135,7 @@
 <p>虽然顺序一致在实现效率上较之强一致优势非常明显，但其完全不对不同线程间操作进行限制的特性有时也会使得只支持顺序一致的数据结构变得难以使用。
 因此 Maurice Herlihy 和 Nir Shavit 等人提出了静态一致的概念，它保证如果两个分属不同线程的操作间有一段完全空闲的时间，那么这两个操作的顺序是可以被区分的。
 图形化的表示的话就是下面这种感觉：</p>
-<p><img alt="Quiescent" src="../images/Quiescent.png" /></p>
+<p><img alt="Quiescent" src="images/Quiescent.png" /></p>
 <p>需要注意的是，被称之为 Quiescent 的这一段时间是要求完全空闲的，即没有任何一个线程有执行操作。
 得益于这个条件，静态一致同样是可组合的。
 虽然看上去很奇怪，有很多的 Concurrent Data Structure 提供的就是静态一致的模型，具体的话可以参考<a href="http://cacm.acm.org/magazines/2011/3/105308-data-structures-in-the-multicore-age/abstract">这篇文章</a>。</p>
