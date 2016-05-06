@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>MingX01</title><link href="http://localhost:8087/" rel="alternate"></link><link href="http://localhost:8087/feeds/about-me.atom.xml" rel="self"></link><id>http://localhost:8087/</id><updated>2010-12-03T10:20:00+08:00</updated><entry><title>About Me</title><link href="http://localhost:8087/about-me.html" rel="alternate"></link><published>2010-12-03T10:20:00+08:00</published><author><name>MingX01</name></author><id>tag:localhost:8087,2010-12-03:about-me.html</id><summary type="html">&lt;p&gt;Following is a review of my favorite mechanical keyboard.&lt;/p&gt;
+&lt;p&gt;啊东方大厦
+sd
+dsfas&lt;/p&gt;
+&lt;p&gt;阿萨德发&lt;/p&gt;</summary><category term="EE"></category><category term="RR"></category></entry></feed>
