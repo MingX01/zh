@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi --> 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']],processEscapes: true}
+  });
+  MathJax.Hub.Register.StartupHook("HTML-CSS Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax["HTML-CSS"].FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+      MathJax.Hub.Register.StartupHook("SVG Jax Ready",function () {
+      var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;
+      VARIANT["normal"].fonts.unshift("MathJax_SansSerif");
+      VARIANT["bold"].fonts.unshift("MathJax_SansSerif-bold");
+      VARIANT["italic"].fonts.unshift("MathJax_SansSerif-italic");
+      VARIANT["-tex-mathit"].fonts.unshift("MathJax_SansSerif-italic");
+      });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+    <meta charset="utf-8" />
+    <title>MingX01</title>
+    <link rel="shortcut icon" type="image/png" href="https://MingX01.github.io/zh/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://MingX01.github.io/zh/favicon.ico">
+    <link href="https://MingX01.github.io/zh/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="MingX01 Full Atom Feed" />
+    <link rel="stylesheet" href="https://MingX01.github.io/zh/theme/css/screen.css" type="text/css" />
+    <link rel="stylesheet" href="https://MingX01.github.io/zh/theme/css/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="https://MingX01.github.io/zh/theme/css/print.css" type="text/css" media="print" />
+    <meta name="generator" content="Pelican" />
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="https://MingX01.github.io/zh">Home</a></li>
+                <li><a href="https://MingX01.github.io/zh/pages/about.html">About</a></li>
+                <li><a href="https://MingX01.github.io/zh/archives">Archives</a></li>
+            </ul>
+        </nav>
+        <div class="header_box">
+            <h1><a href="https://MingX01.github.io/zh">MingX01</a></h1>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content"><ul>
+        <li><a href="https://MingX01.github.io/zh/tag/consistency-model.html">consistency model</a></li>
+        <li><a href="https://MingX01.github.io/zh/tag/linearizability.html">linearizability</a></li>
+        <li><a href="https://MingX01.github.io/zh/tag/sequential-consistency.html">sequential consistency</a></li>
+        <li><a href="https://MingX01.github.io/zh/tag/eventual-consistency.html">eventual consistency</a></li>
+</ul>
+
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <a href="https://github.com/jody-frankowski/blue-penguin">Blue Penguin</a> Theme
+                &middot;
+                Powered by <a href="http://getpelican.com">Pelican</a>
+                &middot;
+                <a href="https://MingX01.github.io/zh/feeds/all.atom.xml" rel="alternate">Atom Feed</a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>
