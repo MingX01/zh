@@ -118,7 +118,7 @@
 <p>select 的主要缺点有两个：一个是它只返回有数据了而不返回具体是哪一个 socket，因此需要线性的遍历一遍；另一个则是它只支持 1024 个 socket（因为它采用 32 个32位整数的比特位表示 socket），需要增加的话要修改 FD_SETSIZE。
 相对的 epoll 维护了特殊的数据结构，可以直接返回哪一个 socket 状态变化了。
 kqueue 就是 BSD 上的 epoll，不过在某种意义上效率更好一点<a href="http://www.eecs.berkeley.edu/~sangjin/2012/12/21/epoll-vs-kqueue.html"><sup>9</sup></a>。</p>
-<p>不过说实话我觉得在 ZeroMQ，libevent，DPDK 等不同层面的网络库存在的情况下，直接用上面那几个基础借口编程实在是一件费力不讨好的事情 ......</p>
+<p>不过说实话我觉得在 ZeroMQ，libevent，DPDK 等不同层面的网络库存在的情况下，直接用上面那几个基础接口编程实在是一件费力不讨好的事情 ......</p>
 <p><em>3.2 HTTP GET V.S. HTTP POST</em></p>
 <p>偶然看到的一个问题。
 似乎按照 HTTP 的规范 HTTP GET 只能是用于获取信息而非修改信息，因此必须是幂等的（即多次请求结果应该和一次一样）<a href="http://www.cnblogs.com/hyddd/archive/2009/03/31/1426026.html"><sup>10</sup></a>。</p>
