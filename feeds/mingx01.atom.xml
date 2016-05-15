@@ -1,5 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>MingX01</title><link href="https://MingX01.github.io/zh/" rel="alternate"></link><link href="https://MingX01.github.io/zh/feeds/mingx01.atom.xml" rel="self"></link><id>https://MingX01.github.io/zh/</id><updated>2016-05-12T00:00:00+08:00</updated><entry><title>图计算框架源流（1）</title><link href="https://MingX01.github.io/zh/tu-ji-suan-kuang-jia-yuan-liu-1.html" rel="alternate"></link><published>2016-05-12T00:00:00+08:00</published><author><name>MingX01</name></author><id>tag:MingX01.github.io,2016-05-12:zh/tu-ji-suan-kuang-jia-yuan-liu-1.html</id><summary type="html">&lt;p&gt;&lt;em&gt;说明：本文所用图片部分来源于网络，但出处已然不明。如有不妥之处，望请通过&lt;a href="pages/about.html"&gt;邮件&lt;/a&gt;与我联系。&lt;/em&gt;&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>MingX01</title><link href="https://MingX01.github.io/zh/" rel="alternate"></link><link href="https://MingX01.github.io/zh/feeds/mingx01.atom.xml" rel="self"></link><id>https://MingX01.github.io/zh/</id><updated>2016-05-12T00:00:00+08:00</updated><entry><title>传说中的常见面试题</title><link href="https://MingX01.github.io/zh/chuan-shuo-zhong-de-chang-jian-mian-shi-ti.html" rel="alternate"></link><published>2016-05-12T00:00:00+08:00</published><author><name>MingX01</name></author><id>tag:MingX01.github.io,2016-05-12:zh/chuan-shuo-zhong-de-chang-jian-mian-shi-ti.html</id><summary type="html">&lt;p&gt;&lt;em&gt;说实话我一直觉得这一类 google 一下就能得到答案的所谓 “常见面试题” 并不是一个很合适的考察方法。
+作为一个码农，比起死记硬背的能力来说通过使用 google 等工具短时间内搞明白一件事情的能力显然更为重要。
+所以作为简单地问问题的替代，我觉得其实可以给一个相对来说比较复杂的问题外加一台内置 VPN 的电脑，然后要求被面试者在一定时间之内尽可能的调查清楚这个问题并回答。
+当然了，由于这个世界上的事情经常是无法如意的，所以该准备的还是要准备 ......&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1. 没完没了的虚函数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;虚函数的意义和实现方法基本上算是必考题了，不过鉴于其在实际工程中的确非常常用，这样的考察频率倒也无可厚非。
+这里我不打算详细介绍那些随手 google 一下就能出来一大堆的内容，只是记录一下几个比较容易不小心搞混的地方：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于有虚函数的类，其每个实例都各自有一个隐式定义的 vptr；相对的，vptr 指向的 vtable 是每一个类一个的。&lt;/li&gt;
+&lt;li&gt;因为虚函数的调用有指针的跳转，并且无法应用诸如 inline 等一系列优化技巧，虚函数的调用开销一般比普通函数要大。&lt;/li&gt;
+&lt;li&gt;由于基类在初始化时无法找到子类的虚函数表，所以 constructor 不能是虚函数；相对的，为了避免 delete 一个由基类指针指向的子类实例时可能的内存泄漏，destructor 要求必须为虚函数&lt;a href="https://www.zhihu.com/question/29655539"&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;。&lt;/li&gt;
+&lt;li&gt;由于 static_cast 是直接进行数值之间的转换，所以如果用它做在基类和派生类之间转换的话需要程序员自己保证这个转换一定是合法的；相对的，dynamic_cast 可以识别出不合法的转换并返回 null，这是因为 vtable 中保存了类的 RTTI （Run Time Type Info）信息&lt;a href="https://www.cnblogs.com/zhyg6516/archive/2011/03/07/1971898.html"&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;2. 永无止境的 C++&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;除了上面提到的虚函数外，C++ 还有很多神奇的特性，多到一般人根本不可能 “精通” 的程度。
+因此这里我也就是列举一下比较常见的几个问题。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2.1 malloc V.S. new V.S. placement new&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;C 的 malloc 函数与 C++ 的 new 操作符最大的区别就在于前者是 type ignorant 的，它只是分配特定大小的区域（并将大小信息记录在尾端&lt;a href="http://www.cnblogs.com/hanyonglu/archive/2011/04/28/2031271.html"&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;）然后返回指向它的 void* 指针而已。
+理论上来说 malloc 返回的区域中的值是随机的。
+相对的，new 不仅仅会分配一块内存，还会调用对应类的构造函数，从而完成类的初始化。
+另外，malloc 的失败是通过返回值返回的，new 则是抛出一个 std::bad_alloc 异常。&lt;/p&gt;
+&lt;p&gt;与上面两个不同，C++ 还提供 placement new，其功能是在给定的内存缓冲上构造一个实例&lt;a href="http://www.cnblogs.com/luxiaoxun/archive/2012/08/10/2631812.html"&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;。
+也就是说 placement new 本身不分配空间，只是调用相应的构造函数。
+与 &lt;a href="http://theboostcpplibraries.com/boost.pool"&gt;Boost.Pool&lt;/a&gt; 相互配合的话就可以实现一个简单的自定义内存分配方案。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2.2 ELF 程序的运行空间&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;程序的运行空间可以被分为 BSS（Block Started by Symbol）段、数据段、代码段、堆、与栈等五个部分。
+后三者大家都表熟悉，相对的 BSS 和数据段都是放置全局变量的，只不过 BSS 被用来存放程序中未初始化的全局变量，因此是可写的（在程序执行之前 BSS 段会自动清 零）；而数据段都是些已初始化的常量什么的，因此是只读的&lt;a href="http://www.cppblog.com/prayer/archive/2009/08/17/93594.html"&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;2.3 static 关键字&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;static 这个关键字被用在不同地方的时候意义各不相同。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;比如说如果被用在全局变量/普通函数前面的话就定义了一个全局静态变量/静态函数。这种变量/函数的好处在于它的作用域仅为声明它的文件，因此可以在不同文件中定义同一个名字的全局静态变量而不互相冲突。&lt;/li&gt;
+&lt;li&gt;上述静态函数最常用的一个例子为放在 .h 文件里的 static inline 函数，如果没有这个 static 的话每个 .cpp 文件里都会有一份一样的函数，从而造成冲突。&lt;/li&gt;
+&lt;li&gt;局部静态变量更像是全局静态变量的一个语法糖一样的存在，只不过编译器会自动添加检查语句来将它的初始化延迟到对应函数的第一次调用时&lt;a href="https://www.zhihu.com/question/45488363/answer/99389030"&gt;&lt;sup&gt;6&lt;/sup&gt;&lt;/a&gt;。
+需要注意的是，一般的函数局部变量是放在栈上的，而局部静态变量是在 BSS 里的。&lt;/li&gt;
+&lt;li&gt;静态成员函数和静态成员变量过于常用，因此这里就不赘述了。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;2.4 RAII&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;RAII（Resource Acquisition Is Initialization）其实应该算是一种设计模式。
+它的意思就是将资源的获取与释放分别放在一个类的构造和析构函数里。
+这样就可以利用 C++ 自身的作用域管理而不是手动的对资源进行管理，避免泄漏。
+常见的一种目的就在于避免由于程序运行的中间抛出了异常导致放置在程序末尾的释放语句没有被执行&lt;a href="http://www.cnblogs.com/mavaL/articles/2515381.html"&gt;&lt;sup&gt;7&lt;/sup&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;关于 C++ 还有很多其他问题，比如智能指针的实现方法&lt;a href="http://www.cnblogs.com/QG-whz/p/4777312.html"&gt;&lt;sup&gt;8&lt;/sup&gt;&lt;/a&gt;什么的，不过它们大多都被问烂了，因此这里也就不列举了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;3. 杂七杂八的各种问题&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;3.1 select V.S. epoll V.S. kqueue&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;select 的主要缺点有两个：一个是它只返回有数据了而不返回具体是哪一个 socket，因此需要线性的遍历一遍；另一个则是它只支持 1024 个 socket（因为它采用 32 个32位整数的比特位表示 socket），需要增加的话要修改 FD_SETSIZE。
+相对的 epoll 维护了特殊的数据结构，可以直接返回哪一个 socket 状态变化了。
+kqueue 就是 BSD 上的 epoll，不过在某种意义上效率更好一点&lt;a href="http://www.eecs.berkeley.edu/~sangjin/2012/12/21/epoll-vs-kqueue.html"&gt;&lt;sup&gt;9&lt;/sup&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;不过说实话我觉得在 ZeroMQ，libevent，DPDK 等不同层面的网络库存在的情况下，直接用上面那几个基础借口编程实在是一件费力不讨好的事情 ......&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;3.2 HTTP GET V.S. HTTP POST&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;偶然看到的一个问题。
+似乎按照 HTTP 的规范 HTTP GET 只能是用于获取信息而非修改信息，因此必须是幂等的（即多次请求结果应该和一次一样）&lt;a href="http://www.cnblogs.com/hyddd/archive/2009/03/31/1426026.html"&gt;&lt;sup&gt;10&lt;/sup&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;3.3 单例的 X 种实现方式&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;说实话我觉得设计模式最大的问题就在于它定义了一大堆其实并没有必要的专有名词，而且这些名词还都没有一个形式化的明确定义，从而导致不同的地方意思还总是不太一样。
+当然还有就是那些奇怪的 JAVA 代码，实在是不好理解。
+不过常见的几种设计模式的思想和实现方法其实还是很有意思的。&lt;/p&gt;
+&lt;p&gt;拿最常见的单例模式举例的话：
+如果简单的用 static 成员变量来实现的话就会在镜像装载的那一刻初始化，因此也被称之为 “饿汉”；
+相对的，如果在第一次真正使用时才初始化的话就被称之为 “懒汉”；
+同时，由于懒汉方式在多线程环境下有数据竞争的问题，还发明了能够减少同步次数，用 Double-Checked Locking 优化的线程安全版懒汉&lt;a href="http://www.hollischuang.com/archives/1373"&gt;&lt;sup&gt;11&lt;/sup&gt;&lt;/a&gt;。
+总的来说这些实现方式都去了解一下的话还是挺有意思的。&lt;/p&gt;
+&lt;p&gt;其他的设计模式中我个人觉得最好玩的是 Command。它的意思是将两个类 A，B 间的直接调用拆解为 A 产生一个 Command 类的实例，而 B 则执行一个参数为 Command 的函数。通过 Command 类 A 和 B 之间的紧耦合关系被解耦了，因此如果调用的参数发生变化了修改起来很方便，A 和 B 各自替换起来也很方便&lt;a href="http://design-patterns.readthedocs.io/zh_CN/latest/behavioral_patterns/command.html"&gt;&lt;sup&gt;12&lt;/sup&gt;&lt;/a&gt;。
+当然其他的比如 Observer 和 Flyweight 也很有用，只不过有的时候总有一种不需要这么严格的定义，其实照着思想直接自己设计还更方便的感觉。&lt;/p&gt;</summary><category term="C++"></category><category term="Linux"></category></entry><entry><title>图计算框架源流（1）</title><link href="https://MingX01.github.io/zh/tu-ji-suan-kuang-jia-yuan-liu-1.html" rel="alternate"></link><published>2016-05-12T00:00:00+08:00</published><author><name>MingX01</name></author><id>tag:MingX01.github.io,2016-05-12:zh/tu-ji-suan-kuang-jia-yuan-liu-1.html</id><summary type="html">&lt;p&gt;&lt;em&gt;说明：本文所用图片部分来源于网络，但出处已然不明。如有不妥之处，望请通过&lt;a href="pages/about.html"&gt;邮件&lt;/a&gt;与我联系。&lt;/em&gt;&lt;/p&gt;
 &lt;h1&gt;0 从数据并行到图并行&lt;/h1&gt;
 &lt;p&gt;自从 04 年 Google 公开了它的 MapReduce 之后，大家就像是发现了什么新大陆一样以极大的热情投入到新型计算框架的研发以及已有框架的优化之中。
 如果要说这一系列的工作有什么共同点的话，那就是它们都致力于提供一个简单易用的上层接口，从而将底层的诸如二级存储访问、网络通讯、横向扩展、单点容错等相对来说更复杂的问题透明化，达到普通的软件开发人员只需要聚焦于上层应用的目的。
